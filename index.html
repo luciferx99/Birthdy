@@ -1,0 +1,3721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💖 Birthday Surprise For You 💖</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Poppins:wght@300;400;500;600;700;800;900&family=Dancing+Script:wght@400;600;700&family=Pacifico&family=Righteous&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        /* ================================================
+           RESET & BASE STYLES
+           ================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            position: relative;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #f5576c, #f093fb);
+        }
+
+        /* ================================================
+           SECTION CONTAINER - Mobile First Design
+           ================================================ */
+        .section {
+            min-height: 100vh;
+            width: 100%;
+            display: none;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: column;
+            padding: 80px 20px 120px;
+            position: relative;
+            overflow: visible !important;
+            box-sizing: border-box;
+            margin: 0;
+            scroll-behavior: smooth;
+        }
+
+        .section-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            padding: 20px 0;
+        }
+
+        /* ================================================
+           SCROLL BUTTON LOGIC
+           ================================================ */
+        .scroll-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.5);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation: bounce-btn 2s infinite;
+        }
+
+        .scroll-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 15px 40px rgba(240, 147, 251, 0.7);
+        }
+
+        .scroll-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes bounce-btn {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Hide scroll button on last section */
+        .scroll-btn.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Scroll to top button */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .scroll-top-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ================================================
+           PROGRESS INDICATOR
+           ================================================ */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 9999;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f093fb, #f5576c, #FFD700);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* ================================================
+           MUSIC PLAYER WITH PLAYLIST
+           ================================================ */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .music-player {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(255, 105, 180, 0.4);
+        }
+
+        .music-player:hover {
+            transform: scale(1.15) rotate(15deg);
+            box-shadow: 0 12px 40px rgba(255, 105, 180, 0.6);
+        }
+
+        .music-player.playing {
+            animation: music-spin 3s linear infinite;
+            border-color: #f5576c;
+        }
+
+        @keyframes music-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .music-icon {
+            font-size: 26px;
+        }
+
+        /* Music Track Info */
+        .track-info {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            font-size: 12px;
+            max-width: 200px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .track-info.show {
+            opacity: 1;
+        }
+
+        /* Volume Slider */
+        .volume-control {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .volume-control.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        input[type="range"] {
+            width: 100px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            border-radius: 5px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            background: #f5576c;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* ================================================
+           NAVIGATION DOTS WITH LABELS
+           ================================================ */
+        /* Nav dots intentionally hidden for this build */
+        .nav-dots { display: none !important; }
+
+        .dot-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+        }
+
+        .dot.active {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            width: 16px;
+            height: 16px;
+            box-shadow: 0 0 20px rgba(240, 147, 251, 0.8);
+        }
+
+        .dot-label {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 11px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .dot-container:hover .dot-label,
+        .dot.active ~ .dot-label {
+            opacity: 1;
+        }
+
+        /* ================================================
+           BUTTONS - Enhanced with Logic & Polish
+           ================================================ */
+        .btn {
+            padding: 18px 45px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: width 0.6s, height 0.6s, top 0.6s, left 0.6s;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-love {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-love:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(240, 147, 251, 0.6), 0 0 30px rgba(245, 87, 108, 0.5);
+        }
+
+        .btn-rainbow {
+            background: linear-gradient(135deg, #FA8BFF 0%, #2BD2FF 50%, #2BFF88 100%);
+            color: white;
+            animation: rainbow-pulse 3s infinite;
+        }
+
+        @keyframes rainbow-pulse {
+            0%, 100% { 
+                box-shadow: 0 10px 40px rgba(250, 139, 255, 0.5);
+                filter: hue-rotate(0deg);
+            }
+            50% { 
+                box-shadow: 0 20px 60px rgba(43, 210, 255, 0.8);
+                filter: hue-rotate(30deg);
+            }
+        }
+
+        .btn-rainbow:hover {
+            box-shadow: 0 20px 50px rgba(250, 139, 255, 0.6), 0 0 30px rgba(43, 210, 255, 0.5);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ================================================
+           LOADING SCREEN
+           ================================================ */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 10000;
+            transition: opacity 1.5s ease;
+        }
+
+        .loading-heart {
+            font-size: clamp(4rem, 15vw, 8rem);
+            animation: heartbeat 1.2s infinite;
+            filter: drop-shadow(0 10px 40px rgba(255, 105, 180, 0.6));
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            14%, 28% { transform: scale(1.3); }
+            21%, 35% { transform: scale(1.1); }
+        }
+
+        .loading-text {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-top: 30px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .loading-progress {
+            width: 80%;
+            max-width: 350px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin-top: 40px;
+            overflow: hidden;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #fff, #f5576c, #fff);
+            background-size: 200% 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        /* ================================================
+           SECTION 1: WELCOME SCREEN
+           ================================================ */
+        #section1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .welcome-title {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, #f5576c, #fff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s infinite, float-in 1.5s ease;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes float-in {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .welcome-subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.6rem);
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fade-up 1.5s ease forwards 0.5s;
+        }
+
+        @keyframes fade-up {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                transform: translateY(30px);
+            }
+        }
+
+        .gif-container {
+            margin: 40px 0;
+            opacity: 0;
+            animation: fade-up 1.5s ease forwards 1s;
+        }
+
+        .gif-container img {
+            max-width: 300px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ================================================
+           SECTION 2: PASSWORD CHALLENGE
+           ================================================ */
+        #section2 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .password-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            padding: clamp(30px, 5vw, 60px);
+            border-radius: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .password-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 30px;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 18px 20px;
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-align: center;
+            margin: 20px 0;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .password-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: white;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.02);
+        }
+
+        .hint-text {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            opacity: 0.8;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        /* ================================================
+           SECTION 3: MEMORY GAME
+           ================================================ */
+        #section3 {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .game-title {
+            font-family: 'Righteous', cursive;
+            font-size: clamp(2rem, 6vw, 4rem);
+            color: #e91e63;
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 20px;
+            border-radius: 15px;
+            color: #333;
+            font-weight: 600;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(8px, 2vw, 15px);
+            max-width: 500px;
+            margin: 0 auto 30px;
+            padding: 0 10px;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .memory-card::before {
+            content: '?';
+            position: absolute;
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            color: white;
+            font-weight: bold;
+        }
+
+        .memory-card.flipped::before {
+            display: none;
+        }
+
+        .memory-card.flipped {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            animation: match-pop 0.6s ease;
+            pointer-events: none;
+        }
+
+        @keyframes match-pop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2) rotate(5deg); }
+        }
+
+        .card-emoji {
+            display: none;
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.flipped .card-emoji,
+        .memory-card.matched .card-emoji {
+            display: block;
+        }
+
+        /* ================================================
+           SECTION 4: LOVE REASONS
+           ================================================ */
+        #section4 {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .love-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            background: linear-gradient(45deg, #f093fb, #f5576c, #FFD700);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 50px;
+            animation: shimmer 3s infinite, title-float 4s ease-in-out infinite;
+        }
+
+        @keyframes title-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .reason-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .reason-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: clamp(20px, 4vw, 30px);
+            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: card-enter 0.8s ease forwards;
+            min-height: 180px;
+        }
+
+        .reason-card:nth-child(1) { animation-delay: 0.1s; }
+        .reason-card:nth-child(2) { animation-delay: 0.2s; }
+        .reason-card:nth-child(3) { animation-delay: 0.3s; }
+        .reason-card:nth-child(4) { animation-delay: 0.4s; }
+        .reason-card:nth-child(5) { animation-delay: 0.5s; }
+        .reason-card:nth-child(6) { animation-delay: 0.6s; }
+        .reason-card:nth-child(7) { animation-delay: 0.7s; }
+        .reason-card:nth-child(8) { animation-delay: 0.8s; }
+
+        @keyframes card-enter {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .reason-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-10px) scale(1.03);
+            border-color: rgba(240, 147, 251, 0.6);
+            box-shadow: 0 20px 50px rgba(240, 147, 251, 0.4);
+        }
+
+        .reason-emoji {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            display: block;
+            margin-bottom: 20px;
+            animation: emoji-bounce 2s infinite !important;
+        }
+
+        @keyframes emoji-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Affection meter */
+        .affection-meter {
+            width: 100%;
+            max-width: 720px;
+            height: 18px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 12px;
+            margin: 20px auto 30px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            position: relative;
+        }
+
+        .affection-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg,#f093fb,#f5576c,#FFD700);
+            transition: width 0.6s cubic-bezier(0.22,1,0.36,1);
+        }
+
+        .affection-text {
+            text-align: center;
+            margin-top: 8px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.95);
+        }
+
+        .reason-card::after {
+            content: 'Click to reveal 💕';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-weight: 700;
+            border-radius: 25px;
+            pointer-events: none;
+        }
+
+        .reason-card:hover::after {
+            opacity: 1;
+        }
+
+        .reason-card.revealed::after {
+            display: none;
+        }
+
+        .reason-card .more-text { display: none; opacity: 0; transition: opacity 0.4s; }
+        .reason-card.revealed .more-text { display: block; opacity: 1; margin-top:12px; color: rgba(255,255,255,0.95); }
+
+        @keyframes emoji-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .reason-text {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* ================================================
+           SECTION 5: GIF GALLERY WITH EMOJIS
+           ================================================ */
+        #section5 {
+            background: linear-gradient(135deg, #FFE985 0%, #FA742B 100%);
+        }
+
+        .gallery-title {
+            font-family: 'Righteous', cursive;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: white;
+            margin-bottom: 40px;
+            text-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .gif-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .gif-item {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gif-item:hover {
+            transform: translateY(-15px) scale(1.05) rotate(3deg);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .gif-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gif-caption {
+            padding: 15px;
+            text-align: center;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            color: #333;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        /* Emoji Rain Effect */
+        .emoji-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .falling-emoji {
+            position: absolute;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            animation: fall 8s linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* ================================================
+           SECTION 6: QUIZ GAME
+           ================================================ */
+        #section6 {
+            background: linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%);
+        }
+
+        .quiz-container {
+            background: rgba(255, 255, 255, 0.98);
+            padding: clamp(30px, 5vw, 50px);
+            border-radius: 30px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+            max-width: 700px;
+            margin: 0 auto;
+            color: #333;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .quiz-title {
+            font-family: 'Righteous', cursive;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            color: #e91e63;
+        }
+
+        .quiz-progress {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .quiz-question {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            margin-bottom: 25px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .quiz-option {
+            padding: 18px 25px;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            border: 3px solid transparent;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .quiz-option:hover {
+            background: linear-gradient(135deg, #e8e8e8, #d8d8d8);
+            transform: translateX(10px);
+            border-color: #667eea;
+        }
+
+        .quiz-option.correct {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border-color: #2E7D32;
+        }
+
+        .quiz-option.wrong {
+            background: linear-gradient(135deg, #f44336, #e53935);
+            color: white;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-15px); }
+            75% { transform: translateX(15px); }
+        }
+
+        .quiz-score-display {
+            text-align: center;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            font-weight: 700;
+            color: #e91e63;
+            margin-top: 25px;
+            padding: 15px;
+            background: linear-gradient(135deg, #ffeef8, #ffe0f0);
+            border-radius: 15px;
+        }
+
+        /* ================================================
+           SECTION 7: COUNTDOWN
+           ================================================ */
+        #section7 {
+            background: radial-gradient(circle at center, #434343 0%, #000000 100%);
+        }
+
+        .countdown-text {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: 50px;
+            animation: glow-pulse 2s infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { 
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+                opacity: 0.9;
+            }
+            50% { 
+                text-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+                opacity: 1;
+            }
+        }
+
+        .countdown-number {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(8rem, 25vw, 20rem);
+            font-weight: 900;
+            background: linear-gradient(45deg, #f093fb, #f5576c, #FFD700, #f093fb);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s infinite;
+            filter: drop-shadow(0 0 50px rgba(240, 147, 251, 0.8));
+        }
+
+        /* ================================================
+           SECTION 8: BIRTHDAY SURPRISE
+           ================================================ */
+        #section8 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #FFD700 100%);
+        }
+
+        .birthday-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 7rem);
+            margin-bottom: 30px;
+            text-shadow: 0 10px 50px rgba(0, 0, 0, 0.4);
+            animation: birthday-entrance 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            line-height: 1.2;
+        }
+
+        @keyframes birthday-entrance {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.2) rotate(10deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .cake-emoji {
+            font-size: clamp(6rem, 15vw, 10rem);
+            display: inline-block;
+            margin: 30px 0;
+            animation: cake-dance 2s infinite;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes cake-dance {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(-10deg) scale(1.1); }
+            75% { transform: rotate(10deg) scale(1.1); }
+        }
+
+        .birthday-message {
+            font-size: clamp(1.1rem, 3vw, 1.8rem);
+            max-width: 900px;
+            margin: 0 auto 40px;
+            line-height: 2;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            padding: clamp(30px, 5vw, 50px);
+            border-radius: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Fireworks Canvas */
+        #fireworksCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* ================================================
+           SECTION 9: FINAL LOVE LETTER
+           ================================================ */
+        #section9 {
+            background: linear-gradient(to bottom, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
+        }
+
+        .letter-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            color: #d63384;
+            margin-bottom: 40px;
+            animation: letter-glow 3s infinite;
+        }
+
+        @keyframes letter-glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(214, 51, 132, 0.3); }
+            50% { text-shadow: 0 0 40px rgba(214, 51, 132, 0.6); }
+        }
+
+        .letter-content {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            line-height: 2.2;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: clamp(30px, 5vw, 40px);
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            color: #555;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        /* ================================================
+           VIDEO MODAL STYLES - Enhanced Multi-Video
+           ================================================ */
+        #videoModal {
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes video-flip-in {
+            0% {
+                transform: rotateY(180deg) rotateX(45deg) scale(0.5);
+                opacity: 0;
+            }
+            100% {
+                transform: rotateY(0deg) rotateX(0deg) scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes video-flip-switch {
+            0% {
+                transform: rotateY(0deg) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: rotateY(90deg) scale(0.95);
+                opacity: 0.7;
+            }
+            100% {
+                transform: rotateY(0deg) scale(1);
+                opacity: 1;
+            }
+        }
+
+        #videoModal video {
+            border-radius: 20px;
+            max-width: 90vw;
+            max-height: 65vh;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8);
+            display: block;
+            background: #000;
+        }
+
+        #videoModal button {
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        #videoModal button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        #videoModal button:active {
+            transform: translateY(-1px);
+        }
+
+        .video-btn-switch {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            border: none !important;
+            padding: 14px 28px !important;
+            border-radius: 25px !important;
+            cursor: pointer !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4) !important;
+        }
+
+        .video-btn-switch:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6) !important;
+        }
+
+        .video-btn-switch:active {
+            transform: translateY(0px) !important;
+        }
+
+        @media (max-width: 768px) {
+            #videoModal video {
+                max-width: 100vw;
+                max-height: 60vh;
+            }
+
+            #videoModal button {
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+
+            .video-btn-switch {
+                padding: 12px 24px !important;
+                font-size: 13px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #videoModal video {
+                max-height: 50vh;
+            }
+
+            .video-btn-switch {
+                padding: 10px 20px !important;
+                font-size: 12px !important;
+            }
+        }
+
+        /* ================================================
+           ENHANCED SCROLLBAR ANIMATIONS
+           ================================================ */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            display: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: particle-float 10s infinite ease-in-out;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* ================================================
+           SPARKLE EFFECTS
+           ================================================ */
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            animation: sparkle-burst 1s ease-out forwards;
+        }
+
+        @keyframes sparkle-burst {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        /* ================================================
+           MOBILE OPTIMIZATIONS
+           ================================================ */
+        /* Gentle animated background for a dreamy feel */
+        @keyframes bg-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            background: linear-gradient(120deg, #0f1724 0%, #2b0b45 50%, #f093fb 100%);
+            background-size: 300% 300%;
+            animation: bg-shift 18s ease infinite;
+        }
+        @media (max-width: 768px) {
+            .section {
+                padding: 50px 15px 70px;
+            }
+
+            .nav-dots {
+                display: none;
+            }
+
+            .scroll-btn {
+                bottom: 15px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .scroll-top-btn {
+                bottom: 75px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
+
+            .music-control {
+                top: 12px;
+                right: 12px;
+            }
+
+            .music-player {
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+            }
+
+            .card-grid {
+                gap: 8px;
+                max-width: 100%;
+            }
+
+            .gif-grid {
+                grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+                gap: 12px;
+            }
+
+            .reason-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .reason-card {
+                padding: 15px;
+                min-height: auto;
+            }
+
+            .reason-text {
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
+
+            .btn {
+                padding: 12px 28px;
+                font-size: 0.95rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .action-buttons .btn {
+                width: 100%;
+            }
+
+            .password-box {
+                padding: 20px;
+            }
+
+            .birthday-message {
+                padding: 20px;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+
+            .letter-content {
+                padding: 20px;
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section {
+                padding: 40px 12px 60px;
+            }
+
+            .card-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 6px;
+            }
+
+            .memory-card {
+                font-size: 1.8rem;
+            }
+
+            .memory-card::before {
+                font-size: 2.2rem;
+            }
+
+            .reason-card {
+                padding: 12px;
+                border-radius: 15px;
+            }
+
+            .reason-emoji {
+                font-size: clamp(1.8rem, 5vw, 2.5rem);
+                margin-bottom: 10px;
+            }
+
+            .reason-text {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+
+            .gif-grid {
+                grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+                gap: 10px;
+            }
+
+            .welcome-title {
+                font-size: clamp(2rem, 6vw, 3rem);
+            }
+
+            .game-title {
+                font-size: clamp(1.5rem, 5vw, 2.5rem);
+            }
+
+            .love-title {
+                font-size: clamp(2rem, 6vw, 3.5rem);
+            }
+
+            .birthday-title {
+                font-size: clamp(2rem, 8vw, 4rem);
+                line-height: 1.1;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .scroll-btn {
+                bottom: 12px;
+                right: 12px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+
+            .music-player {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+
+            .affection-meter {
+                height: 12px;
+                margin: 15px auto;
+            }
+
+            .action-buttons {
+                gap: 8px;
+            }
+
+            .countdown-number {
+                font-size: clamp(6rem, 20vw, 15rem);
+            }
+
+            .cake-emoji {
+                font-size: clamp(5rem, 12vw, 8rem);
+                margin: 20px 0;
+            }
+        }
+
+        /* ================================================
+           MOBILE TOUCH & RESPONSIVE ENHANCEMENTS
+           ================================================ */
+        @supports (touch-action: manipulation) {
+            .btn, .scroll-btn, .scroll-top-btn, .memory-card, .reason-card {
+                touch-action: manipulation;
+            }
+        }
+
+        /* Enhanced touch feedback */
+        @media (hover: none) and (pointer: coarse) {
+            .btn:active {
+                transform: scale(0.92) !important;
+            }
+            
+            .reason-card::after {
+                display: none;
+            }
+            
+            .reason-card {
+                cursor: pointer;
+            }
+        }
+
+        /* Improve text legibility on small screens */
+        @media (max-width: 360px) {
+            body {
+                -webkit-text-size-adjust: 100%;
+                -moz-text-size-adjust: 100%;
+                text-size-adjust: 100%;
+            }
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+            .section {
+                min-height: auto;
+                padding: 30px 20px;
+            }
+
+            .welcome-title {
+                margin-bottom: 10px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .section {
+                padding: 100px 40px 120px;
+            }
+
+            .reason-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .gif-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .btn {
+                padding: 16px 50px;
+                font-size: 1.1rem;
+            }
+
+            .scroll-btn {
+                width: 70px;
+                height: 70px;
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ================================================
+         PROGRESS BAR
+         ================================================ -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <!-- ================================================
+         MUSIC PLAYER WITH PLAYLIST
+         ================================================ -->
+    <div class="music-control">
+        <div class="music-player" id="musicPlayer" title="Toggle Music">
+            <div class="music-icon">🎵</div>
+        </div>
+        <div class="track-info" id="trackInfo">
+            <div id="trackName">Romantic Music</div>
+        </div>
+        <div class="volume-control" id="volumeControl">
+            <div style="font-size: 11px; margin-bottom: 8px;">Volume</div>
+            <input type="range" min="0" max="100" value="70" id="volumeSlider">
+        </div>
+    </div>
+
+    <!-- Audio Elements - REPLACE THESE URLs WITH YOUR MUSIC -->
+    <!-- 
+        TO CUSTOMIZE: Replace the src URLs with your own music files
+        Recommended: Use royalty-free music or songs you have rights to use
+        Good sources: YouTube Audio Library, Bensound, Free Music Archive
+    -->
+    <audio id="bgMusic1" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-memories.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="bgMusic2" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="bgMusic3" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-happyrock.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="bgMusic4" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-anewbeginning.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="birthdayMusic" loop>
+        <!-- BIRTHDAY MUSIC: Replace with upbeat birthday song -->
+        <source src="https://www.bensound.com/bensound-music/bensound-happiness.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- COUNTDOWN VOICE AUDIO (1, 2, 3) -->
+    <audio id="countdownAudio1">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="countdownAudio2">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2868/2868-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="countdownAudio3">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2867/2867-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Navigation dots removed for cleaner mobile-first UX -->
+
+    <!-- ================================================
+         SCROLL BUTTONS
+         ================================================ -->
+    <button class="scroll-btn" id="scrollBtn" title="Next Section">
+        ↓
+    </button>
+    <button class="scroll-top-btn" id="scrollTopBtn" title="Back to Top">
+        ↑
+    </button>
+
+    <!-- ================================================
+         LOADING SCREEN
+         ================================================ -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-heart">💖</div>
+        <div class="loading-text">Preparing your special surprise...</div>
+        <div class="loading-progress">
+            <div class="loading-bar" id="loadingBar"></div>
+        </div>
+    </div>
+
+    <!-- ================================================
+         SECTION 1: WELCOME
+         ================================================ -->
+    <section class="section" id="section1">
+        <div class="particles" id="particles1"></div>
+        <div class="section-content">
+            <h1 class="welcome-title">Hey Beautiful! 💕</h1>
+            <p class="welcome-subtitle">I've created something magical just for you...</p>
+            
+            <!-- CUSTOMIZABLE GIF: Replace with your romantic GIF -->
+            <div class="gif-container">
+                <img src="https://media.giphy.com/media/ofoeKJWv8Z8XS9AHOY/giphy.gif" alt="Love GIF">
+            </div>
+            
+            <button class="btn btn-primary" onclick="scrollToNext()">
+                <span>Start The Journey</span> ✨
+            </button>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SECTION 2: PASSWORD CHALLENGE
+         ================================================ -->
+    <section class="section" id="section2">
+        <div class="particles" id="particles2"></div>
+        <div class="section-content">
+            <div class="password-box">
+                <h2 class="password-title">First, a little test... 🔐</h2>
+                <p style="font-size: clamp(1rem, 3vw, 1.3rem); margin-bottom: 20px;">
+                    What's the magic word to unlock my heart?
+                </p>
+                
+                <!-- PASSWORD INPUT: Change the correct answer in JavaScript (line ~1850) -->
+                <input 
+                    type="text" 
+                    class="password-input" 
+                    id="passwordInput" 
+                    placeholder="Type the magic word..."
+                    autocomplete="off"
+                >
+                
+                <button class="btn btn-love" onclick="checkPassword()">
+                    <span>Unlock My Heart</span> 💖
+                </button>
+                
+                <!-- CUSTOMIZABLE HINT: Edit this text -->
+                <p class="hint-text">💡 Hint: It's a 4-letter word that describes how I feel about you</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SECTION 3: MEMORY GAME
+         ================================================ -->
+    <section class="section" id="section3">
+        <div class="particles" id="particles3"></div>
+        <div class="section-content">
+            <h2 class="game-title">Memory Challenge! 🎮✨</h2>
+            <p style="color: #333; font-size: clamp(1rem, 2.5vw, 1.2rem); margin-bottom: 20px;">
+                Match all the pairs to continue! 💕
+            </p>
+            
+            <div class="game-stats">
+                <div class="stat-box">⏱️ Time: <span id="gameTimer">0</span>s</div>
+                <div class="stat-box">💕 Matches: <span id="matchCount">0</span>/8</div>
+                <div class="stat-box">🔄 Moves: <span id="moveCount">0</span></div>
+            </div>
+            
+            <div class="card-grid" id="cardGrid">
+                <!-- Generated by JavaScript -->
+            </div>
+            
+            <button class="btn btn-rainbow" onclick="scrollToNext()">
+                <span>Continue Our Story</span> 💖
+            </button>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SECTION 4: WHY I LOVE YOU
+         ================================================ -->
+    <section class="section" id="section4">
+        <div class="particles" id="particles4"></div>
+        <div class="section-content">
+            <h2 class="love-title">Why You Mean Everything To Me ✨</h2>
+            
+            <!-- Enhanced reasons for an online relationship with interactions -->
+            <div class="affection-meter" aria-hidden="false">
+                <div class="affection-fill" id="affectionFill"></div>
+            </div>
+            <div class="affection-text" id="affectionText">Affection: 0%</div>
+
+            <div class="reason-grid" id="reasonGrid">
+                <div class="reason-card" data-value="8">
+                    <span class="reason-emoji">😊</span>
+                    <p class="reason-text">Your messages are my little sunbeams — they brighten days I thought were grey.</p>
+                    <div class="more-text">Even when we're apart, your words make me feel close, warm, and safe. I read them again and again.</div>
+                </div>
+                <div class="reason-card" data-value="6">
+                    <span class="reason-emoji">💬</span>
+                    <p class="reason-text">Our late-night talks that stretch until dawn — I treasure every secret shared.</p>
+                    <div class="more-text">You know how to listen when I ramble and make me laugh when I need it most.</div>
+                </div>
+                <div class="reason-card" data-value="7">
+                    <span class="reason-emoji">🎧</span>
+                    <p class="reason-text">You send songs that feel like love letters — I play them and imagine you beside me.</p>
+                    <div class="more-text">Those small playlists are little time capsules of us.</div>
+                </div>
+                <div class="reason-card" data-value="5">
+                    <span class="reason-emoji">📸</span>
+                    <p class="reason-text">Every photo and selfie you share becomes a treasure I keep close.</p>
+                    <div class="more-text">Your smile in a picture is enough to change my whole day.</div>
+                </div>
+                <div class="reason-card" data-value="6">
+                    <span class="reason-emoji">✈️</span>
+                    <p class="reason-text">We dream about the day we'll finally meet — and those dreams make every day sweeter.</p>
+                    <div class="more-text">Until then our plans and promises are the sweetest adventures.</div>
+                </div>
+                <div class="reason-card" data-value="8">
+                    <span class="reason-emoji">🌙</span>
+                    <p class="reason-text">You're the last person I text before I sleep and the first I think of when I wake.</p>
+                    <div class="more-text">Those small moments make me feel loved from miles away.</div>
+                </div>
+                <div class="reason-card" data-value="5">
+                    <span class="reason-emoji">🎨</span>
+                    <p class="reason-text">You color my imagination with the sweetest possibilities for our future.</p>
+                    <div class="more-text">I collect these little 'what ifs' and build a whole world with you in it.</div>
+                </div>
+                <div class="reason-card" data-value="8">
+                    <span class="reason-emoji">❤️</span>
+                    <p class="reason-text">You love me in ways words sometimes fail to capture — and I feel every bit of it.</p>
+                    <div class="more-text">Your care, your kindness, your time: they make me feel truly cherished.</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-love" onclick="scrollToNext()">
+                <span>See Our Memories</span> 📸
+            </button>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SECTION 5: GIF GALLERY
+         ================================================ -->
+    <section class="section" id="section5">
+        <div class="particles" id="particles5"></div>
+        <div class="emoji-rain" id="emojiRain"></div>
+        <div class="section-content">
+            <h2 class="gallery-title">Our Beautiful Moments 💖✨</h2>
+            
+            <!-- CUSTOMIZABLE GIFS: Replace these GIF URLs with your own -->
+            <div class="gif-grid">
+                <div class="gif-item" onclick="gifClick(this)">
+                    <img src="https://media.giphy.com/media/g9GUumsUPwGo8/giphy.gif" alt="Love">
+                    <div class="gif-caption">Missing you every second 💕</div>
+                </div>
+                <div class="gif-item" onclick="gifClick(this)">
+                    <img src="https://media.giphy.com/media/l0HlKvpDT9nHv46j6/giphy.gif" alt="Happy">
+                    <div class="gif-caption">Your smile through the screen 😘</div>
+                </div>
+                <div class="gif-item" onclick="gifClick(this)">
+                    <img src="https://media.giphy.com/media/lIXBvw9yoKubQIHPxy/giphy.gif" alt="Adventure">
+                    <div class="gif-caption">Dreaming of the day we meet ✍️</div>
+                </div>
+                <div class="gif-item" onclick="gifClick(this)">
+                    <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="Dance">
+                    <div class="gif-caption">Dancing in my dreams with you 🌙</div>
+                </div>
+                <div class="gif-item" onclick="gifClick(this)">
+                    <img src="https://media.giphy.com/media/Qwoyn12QewQjy/giphy.gif" alt="Heart">
+                    <div class="gif-caption">You have my whole heart 💞</div>
+                </div>
+                <div class="gif-item" onclick="gifClick(this)">
+                    <img src="https://media.giphy.com/media/3o85xIO33l7RlmLR20/giphy.gif" alt="Forever">
+                    <div class="gif-caption">Forever and always yours ∞</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="scrollToNext()">
+                <span>Take The Quiz!</span> 🎯
+            </button>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SECTION 6: LOVE QUIZ
+         ================================================ -->
+    <section class="section" id="section6">
+        <div class="particles" id="particles6"></div>
+        <div class="section-content">
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <h2 class="quiz-title">Love Quiz 💕</h2>
+                    <div class="quiz-progress">Question <span id="currentQ">1</span>/3</div>
+                </div>
+                
+                <div id="quizContent">
+                    <p class="quiz-question" id="quizQuestion"></p>
+                    <div class="quiz-options" id="quizOptions"></div>
+                </div>
+                
+                <div class="quiz-score-display">
+                    Score: <span id="quizScore">0</span>/3 ⭐
+                </div>
+                
+                <button class="btn btn-love" onclick="scrollToNext()" style="margin-top: 30px; width: 100%;">
+                    <span>Continue Journey</span> 💖
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SECTION 7: COUNTDOWN
+         ================================================ -->
+    <section class="section" id="section7">
+        <div class="particles" id="particles7"></div>
+        <div class="section-content">
+            <p class="countdown-text">⭐ Get ready for something amazing... ⭐</p>
+            <div class="countdown-number" id="countdownNumber">3</div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SECTION 8: BIRTHDAY SURPRISE
+         ================================================ -->
+    <section class="section" id="section8">
+        <canvas id="fireworksCanvas"></canvas>
+        <div class="particles" id="particles8"></div>
+        <div class="section-content">
+            <h1 class="birthday-title">🎂 HAPPY BIRTHDAY<br>MY LOVE! 🎉</h1>
+            <div class="cake-emoji">🎂</div>
+            
+            <!-- CUSTOMIZABLE BIRTHDAY MESSAGE: Edit this text -->
+            <div class="birthday-message">
+                Today we celebrate YOU – the most incredible person in my life! 🌟 Despite the miles between us, you fill my days with more joy than I ever imagined. Every message, every call, every moment we share bridges the distance and makes my heart feel so full. Thank you for loving me so fiercely from afar, for believing in us, and for making every single day brighter. You deserve all the happiness, all the love, and all the dreams coming true! Here's to another year of late-night conversations, stolen moments, and building our beautiful future together. I love you more than words could ever say! Forever yours, across every distance. 💕✨🎈
+            </div>
+            
+            <button class="btn btn-rainbow" onclick="redirectToSurprise()">
+                <span>One More Thing...</span> 💌
+            </button>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SECTION 9: FINAL LOVE LETTER
+         ================================================ -->
+    <section class="section" id="section9">
+        <div class="particles" id="particles9"></div>
+        <div class="section-content">
+            <h2 class="letter-title">A Letter From My Heart 💌</h2>
+            
+            <!-- CUSTOMIZABLE LOVE LETTER: Edit this message -->
+            <div class="letter-content">
+                My Dearest Love,<br><br>
+                I wanted to tell you something I feel every single day but sometimes struggle to put into words. You are my person – the one I choose over and over again, despite the distance, despite the challenges. Our love is real, it's beautiful, and it's one of the most precious things I've ever experienced.<br><br>
+                Every message you send is a love letter. Every call is a reminder that you're choosing to spend your time with me. Every moment we share, no matter how small, becomes a treasure I hold close. You've taught me that love doesn't need to be in the same room to be infinite – it just needs to be true, and ours is so beautifully true.<br><br>
+                Thank you for being patient with the distance. Thank you for being my rock, my comfort, my dream. Thank you for loving me in a way that feels like home. I promise to cherish you, to show up for you, to believe in us, and to love you endlessly. Our future together is everything to me.<br><br>
+                Happy Birthday to my everything! May this year bring you closer to me, may it fill your days with joy, and may it be the year we finally hold each other. Until then, I'm holding your heart in mine, and I always will. 💖<br><br>
+                Forever and Always Yours,<br>
+                With All My Love ❤️✨
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="replayExperience()">
+                    <span>Experience Again!</span> 🔄
+                </button>
+                <button class="btn btn-rainbow" onclick="showVideoSurprise()">
+                    <span>Play Surprise Video!</span> 🎥
+                </button>
+                <button class="btn btn-love" onclick="downloadMessage()">
+                    <span>Save Memory</span> 📥
+                </button>
+                <button class="btn btn-primary" onclick="startAgain()" style="background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%);">
+                    <span>Start Again</span> 🏠
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Modal for Surprise - Enhanced Multi-Video Support with 3D Flip -->
+    <div id="videoModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.98);z-index:5000;align-items:center;justify-content:center;flex-direction:column;overflow:auto;perspective:1200px;">
+        <div style="position:relative;max-width:90vw;max-height:90vh;width:100%;height:auto;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:20px;box-sizing:border-box;">
+            
+            <!-- Close Button -->
+            <button onclick="closeVideoModal()" style="position:absolute;top:20px;right:20px;background:linear-gradient(135deg,#ff6b6b 0%,#ee5a6f 100%);color:white;border:none;padding:12px 25px;border-radius:50px;cursor:pointer;font-size:16px;z-index:5001;font-weight:bold;box-shadow:0 5px 15px rgba(255,107,107,0.4);transition:all 0.3s ease;">✕ Close</button>
+            
+            <!-- Video Container with 3D Flip Effect Support -->
+            <div style="margin-top:40px;width:100%;max-width:640px;display:flex;align-items:center;justify-content:center;perspective:1200px;">
+                <video id="surpriseVideo" style="width:100%;height:auto;min-height:300px;max-height:65vh;object-fit:contain;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.8);background:#000;display:block;" controls controlsList="nodownload">
+                    <source src="" type="video/mp4">
+                    Your browser doesn't support HTML5 video.
+                </video>
+            </div>
+            
+            <!-- Video Controls -->
+            <div id="videoControls" style="display:flex;gap:12px;margin-top:30px;justify-content:center;flex-wrap:wrap;width:100%;">
+                <button class="video-btn-switch" onclick="playVideoSlot(0)" data-slot="0" style="padding:14px 28px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:25px;cursor:pointer;font-size:14px;font-weight:600;transition:all 0.3s ease;box-shadow:0 5px 15px rgba(102,126,234,0.4);">🎬 Video 1</button>
+                <button class="video-btn-switch" onclick="playVideoSlot(1)" data-slot="1" style="padding:14px 28px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:25px;cursor:pointer;font-size:14px;font-weight:600;transition:all 0.3s ease;box-shadow:0 5px 15px rgba(102,126,234,0.4);">💕 Video 2</button>
+                <button class="video-btn-switch" onclick="playVideoSlot(2)" data-slot="2" style="padding:14px 28px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:25px;cursor:pointer;font-size:14px;font-weight:600;transition:all 0.3s ease;box-shadow:0 5px 15px rgba(102,126,234,0.4);">🌟 Video 3</button>
+            </div>
+            
+            <!-- Video Info -->
+            <div id="videoInfo" style="color:#fff;font-size:14px;margin-top:20px;opacity:0.85;text-align:center;max-width:600px;line-height:1.5;">
+                🎥 Ready to play your special videos! Click on Video 1, 2, or 3 to start
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================
+         JAVASCRIPT - ALL LOGIC AND INTERACTIONS
+         ================================================ -->
+    <script>
+        /* ================================================
+           🎨 EASY CUSTOMIZATION SECTION - START HERE!
+           ================================================
+           Replace the URLs and text below with your own.
+           This is where you customize GIFs, music, and messages!
+        */
+
+        // 📸 GIF LINKS - Replace these URLs with your own GIFs
+        const GIF_CONFIG = {
+            welcome: 'https://media.giphy.com/media/ofoeKJWv8Z8XS9AHOY/giphy.gif', // Shows on Welcome screen
+            gallery: [
+                { url: 'https://media.giphy.com/media/g9GUumsUPwGo8/giphy.gif', caption: 'Missing you every second 💕' },
+                { url: 'https://media.giphy.com/media/l0HlKvpDT9nHv46j6/giphy.gif', caption: 'Your smile through the screen 😘' },
+                { url: 'https://media.giphy.com/media/lIXBvw9yoKubQIHPxy/giphy.gif', caption: 'Dreaming of the day we meet ✍️' },
+                { url: 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif', caption: 'Dancing in my dreams with you 🌙' },
+                { url: 'https://media.giphy.com/media/Qwoyn12QewQjy/giphy.gif', caption: 'You have my whole heart 💞' },
+                { url: 'https://media.giphy.com/media/3o85xIO33l7RlmLR20/giphy.gif', caption: 'Forever and always yours ∞' }
+            ]
+        };
+
+        // 🎵 MUSIC TRACKS - Replace with your own music URLs
+        const MUSIC_CONFIG = {
+            track1: 'https://www.bensound.com/bensound-music/bensound-memories.mp3',   // Memories
+            track2: 'https://www.bensound.com/bensound-music/bensound-romantic.mp3',   // Romantic
+            track3: 'https://www.bensound.com/bensound-music/bensound-happyrock.mp3',  // Happy Rock
+            track4: 'https://www.bensound.com/bensound-music/bensound-anewbeginning.mp3', // New Beginning
+            birthday: 'https://www.bensound.com/bensound-music/bensound-happiness.mp3'  // Birthday
+        };
+
+        // 📝 TEXT & MESSAGES - Enhanced & Romantic
+        const TEXT_CONFIG = {
+            passwordAnswer: 'love',
+            passwordHint: '💡 Hint: It\'s a 4-letter word that makes my heart skip a beat',
+            welcomeTitle: 'Hey Beautiful! 💕',
+            welcomeSubtitle: 'I\'ve created something magical just for you... 🌙✨',
+            birthdayMessage: 'Today we celebrate YOU – the most incredible person in my life! 🌟 Despite the miles between us, you fill my days with more joy than I ever imagined. Every message, every call, every moment we share bridges the distance and makes my heart feel so full. Thank you for loving me so fiercely from afar, for believing in us, and for making every single day brighter. You deserve all the happiness, all the love, and all the dreams coming true! Here\'s to another year of late-night conversations, stolen moments, and building our beautiful future together. I love you more than words could ever say! Forever yours, across every distance. 💕✨🎈'
+        };
+
+        /* ================================================
+           � DEVICE DETECTION & PERFORMANCE OPTIMIZATION
+           ================================================ */
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isLowEndDevice = (navigator.deviceMemory || 4) <= 4 || window.innerWidth <= 480;
+        const isHighEndDevice = window.innerWidth >= 1920;
+        
+        // Optimize animations based on device
+        if (isLowEndDevice) {
+            document.documentElement.style.setProperty('--animation-speed', '1.5');
+            console.log('📱 Low-end device detected - reduced animations');
+        } else if (isHighEndDevice) {
+            document.documentElement.style.setProperty('--animation-speed', '0.8');
+        }
+
+        /* ================================================
+           �🔧 GLOBAL VARIABLES & GAME STATE
+           ================================================ */
+        
+        // Navigation and music variables
+        let currentSection = 0;
+        let totalSections = 9;
+        // Track id string (keep consistent: use element ids like 'bgMusic1')
+        let currentMusicTrack = 'bgMusic1';
+        let musicPlaying = false;
+        
+        let keyStrokes = 0;
+        let easterEggTriggered = false;
+        let iLoveYouCount = 0;
+        // Prevent repeated heavy heart explosions when typing - simple cooldown and cap
+        let heartCooldown = false;
+        let heartsActive = 0;
+        let lastHeartTime = 0;
+        
+        // Game state
+        let quizScore = 0;
+        let quizQuestion = 0;
+        let matchedPairs = 0;
+        let gameTimer = 0;
+        let gameInterval = null;
+        let moveCount = 0;
+        let firstCard = null;
+        let secondCard = null;
+        let lockBoard = false;
+
+        // Quiz data - CUSTOMIZE YOUR QUESTIONS HERE
+        const quizData = [
+            {
+                question: "What's my absolute favorite thing about you? 💕",
+                options: [
+                    "Everything! You light up my world 💖",
+                    "Your amazing cooking skills 🍳",
+                    "Your sense of humor 😂",
+                    "Your fashion sense 👗"
+                ],
+                correct: 0
+            },
+            {
+                question: "What do I love doing with you the most? 🌙",
+                options: [
+                    "Going shopping together 🛍️",
+                    "Just being together in every moment 💑",
+                    "Watching movies and shows 🎬",
+                    "Playing video games 🎮"
+                ],
+                correct: 1
+            },
+            {
+                question: "How much do I truly love you? ∞",
+                options: [
+                    "A whole lot 💓",
+                    "More than pizza! 🍕",
+                    "To infinity and beyond forever! ∞💖",
+                    "Like, really really much 💗"
+                ],
+                correct: 2
+            }
+        ];
+
+        // Music track mapping for each section
+        const musicBySection = {
+            0: 'bgMusic1',  // Section 1 - Welcome
+            1: 'bgMusic2',  // Section 2 - Password
+            2: 'bgMusic3',  // Section 3 - Game
+            3: 'bgMusic2',  // Section 4 - Love Reasons
+            4: 'bgMusic1',  // Section 5 - Gallery
+            5: 'bgMusic3',  // Section 6 - Quiz
+            6: 'bgMusic1',  // Section 7 - Countdown
+            7: 'birthdayMusic',  // Section 8 - Birthday
+            8: 'bgMusic2'   // Section 9 - Letter
+        };
+
+        /* ================================================
+           🚀 PAGE INITIALIZATION - Runs when page loads
+           Sets up all game elements, animations, and listeners
+           ================================================ */
+        window.addEventListener('load', () => {
+                // Load and display loading screen
+                initLoading();
+                // Create background particle animations
+                createParticles();
+                // Prepare memory matching game cards
+                initMemoryGame();
+                // Load quiz questions from quizData
+                initQuiz();
+                // Setup music player and controls
+                setupMusicPlayer();
+                // Create emoji rain effect for gallery section
+                createEmojiRain();
+                // Create navigation dots (if element exists)
+                createNavDots();
+                // Initialize affection meter and reason cards
+                initReasons();
+                // Show the first section after 700ms delay
+                setTimeout(() => showSection(0), 700);
+                
+                // Enhanced Music Auto-Play with 6 Triggers (PC + Mobile Optimized!)
+                let musicStarted = false;
+                
+                // Helper function for all triggers
+                function triggerMusicPlayback() {
+                    if (!musicStarted) {
+                        musicStarted = true;
+                        startMusicPlayback();
+                    }
+                }
+                
+                // Trigger 1: On first click (PC & Mobile)
+                document.addEventListener('click', triggerMusicPlayback, { once: true });
+                
+                // Trigger 2: On first touch (Mobile)
+                document.addEventListener('touchstart', triggerMusicPlayback, { once: true });
+                
+                // Trigger 3: On first keyboard key (PC)
+                document.addEventListener('keydown', triggerMusicPlayback, { once: true });
+                
+                // Trigger 4: On page visibility change
+                document.addEventListener('visibilitychange', () => {
+                    if (!document.hidden && !musicStarted) {
+                        musicStarted = true;
+                        setTimeout(() => startMusicPlayback(), 300);
+                    }
+                });
+                
+                // Trigger 5: Window focus event
+                window.addEventListener('focus', () => {
+                    if (!musicStarted) {
+                        musicStarted = true;
+                        startMusicPlayback();
+                    }
+                });
+                
+                // Trigger 6: Auto-start after 1.5 seconds (fallback)
+                setTimeout(() => {
+                    if (!musicStarted) {
+                        musicStarted = true;
+                        startMusicPlayback();
+                        console.warn('⚠️ Music auto-started (1.5s fallback)');
+                    }
+                }, 1500);
+        });
+
+        function startMusicPlayback() {
+            if (!musicPlaying) {
+                musicPlaying = true;
+                console.log('🎵 Starting music playback...');
+                
+                playCurrentMusic().then(() => {
+                    const musicPlayer = document.getElementById('musicPlayer');
+                    if (musicPlayer) {
+                        musicPlayer.classList.add('playing');
+                        musicPlayer.innerHTML = '🔊';
+                        musicPlayer.title = 'Music is playing';
+                    }
+                    console.log('✅ Music started successfully!');
+                }).catch(err => {
+                    console.warn('⚠️ Music blocked: ' + err.message);
+                    musicPlaying = false;
+                    
+                    // User-friendly message
+                    const musicPlayer = document.getElementById('musicPlayer');
+                    if (musicPlayer) {
+                        musicPlayer.innerHTML = '🔕';
+                        musicPlayer.title = 'Click to start music (autoplay blocked by browser)';
+                        musicPlayer.style.cursor = 'pointer';
+                    }
+                });
+            }
+        }
+
+        function enableMusicAutoPlay() {
+            startMusicPlayback();
+        }
+
+        /* ================================================
+           LOADING SCREEN LOGIC
+           Displays a progress bar while page initializes
+           ================================================ */
+        function initLoading() {
+            const loadingBar = document.getElementById('loadingBar');
+            let progress = 0;
+            
+            // Increment progress bar with random steps
+            const interval = setInterval(() => {
+                progress += Math.random() * 20 + 5; // Random increment 5-25%
+                
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    // Fade out loading screen
+                    setTimeout(() => {
+                        document.getElementById('loadingScreen').style.opacity = '0';
+                        // Remove from DOM after fade
+                        setTimeout(() => {
+                            document.getElementById('loadingScreen').style.display = 'none';
+                        }, 1500);
+                    }, 500);
+                }
+                
+                loadingBar.style.width = progress + '%';
+            }, 250); // Update every 250ms
+        }
+
+        // Initialize interactive reasons (affection meter)
+        function initReasons() {
+            const cards = document.querySelectorAll('#reasonGrid .reason-card');
+            const fill = document.getElementById('affectionFill');
+            const text = document.getElementById('affectionText');
+            let affection = 0;
+            let revealed = 0;
+
+            if (!cards || !fill || !text) return;
+
+            const affectionMessages = [
+                'Affection: 0% 💔',
+                'Affection: 12% 🥰',
+                'Affection: 25% 😘',
+                'Affection: 37% 💕',
+                'Affection: 50% 💖',
+                'Affection: 62% 💞',
+                'Affection: 75% 🔥',
+                'Affection: 87% 🌟',
+                'Affection: 100% 💕✨ INFINITE!'
+            ];
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    if (card.classList.contains('revealed')) return; // only once
+                    card.classList.add('revealed');
+                    revealed++;
+                    const val = parseInt(card.dataset.value || '5', 10);
+                    affection += val;
+                    const maxAffection = 8 * 7; // 8 cards × average 7 = 56 max
+                    const percent = Math.min(100, Math.round((affection / maxAffection) * 100));
+                    const msgIdx = Math.floor(percent / 12);
+                    const messageIdx = Math.min(msgIdx, affectionMessages.length - 1);
+                    
+                    fill.style.width = percent + '%';
+                    text.textContent = affectionMessages[messageIdx];
+                    
+                    // Animate the fill and text
+                    gsap.to(fill, {width: percent + '%', duration: 0.8, ease: 'elastic.out(1, 0.5)'});
+                    gsap.to(text, {scale: 1.2, duration: 0.4, yoyo: true, repeat: 1});
+                    createSparkles();
+
+                    // reveal small extra text
+                    const moreText = card.querySelector('.more-text');
+                    if (moreText) {
+                        gsap.fromTo(moreText, {opacity:0, y:8}, {opacity:1, y:0, duration:0.6});
+                    }
+
+                    // Milestone celebrations with enhanced effects
+                    if (percent >= 50 && percent < 75 && revealed === 4) {
+                        setTimeout(() => {
+                            createMassiveConfetti();
+                            gsap.to(text, {scale: 1.3, duration: 0.6});
+                            alert('💕 HALFWAY TO INFINITY! 🌟\nYour love is reaching my heart in beautiful waves. Keep clicking! 💖');
+                        }, 400);
+                    } else if (percent >= 75 && percent < 100 && revealed === 6) {
+                        setTimeout(() => {
+                            heartExplosion();
+                            gsap.to(text, {scale: 1.3, duration: 0.6});
+                            alert('🔥 75% FULL! 🔥\nI\'m completely smitten! You\'re almost at infinite love! 💗');
+                        }, 400);
+                    } else if (percent >= 100) {
+                        setTimeout(() => {
+                            heartExplosion();
+                            createMassiveConfetti();
+                            createSparkles();
+                            gsap.to(text, {scale: 1.4, duration: 0.6});
+                            alert('💞✨ INFINITE LOVE! 💞✨\n\nDespite every mile between us, you\'re my everything!\nThis love has no limits, no boundaries, forever yours! 💕🌟');
+                        }, 400);
+                    }
+                });
+            });
+        }
+
+        function showSection(index) {
+            const sections = document.querySelectorAll('.section');
+            if (index < 0) index = 0;
+            if (index >= sections.length) index = sections.length - 1;
+            currentSection = index;
+
+            sections.forEach((s, i) => {
+                if (i === index) {
+                    s.style.display = 'flex';
+                    // animate entrance
+                    const content = s.querySelector('.section-content') || s;
+                    gsap.fromTo(content, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' });
+                } else {
+                    s.style.display = 'none';
+                }
+            });
+
+            updateProgressBar();
+            updateNavDots();
+            
+            // Change music smoothly for this section
+            // Special handling: Mute music on last page (section 9 is index 8)
+            if (index === 8) {
+                // Last page - fade out music
+                const allAudio = [document.getElementById('bgMusic1'), document.getElementById('bgMusic2'), 
+                                 document.getElementById('bgMusic3'), document.getElementById('bgMusic4'),
+                                 document.getElementById('birthdayMusic')];
+                allAudio.forEach(audio => {
+                    if (audio && audio.volume > 0) {
+                        gsap.to(audio, { volume: 0, duration: 1.2, onComplete: () => {
+                            audio.pause();
+                        }});
+                    }
+                });
+                musicPlaying = false;
+                const musicPlayer = document.getElementById('musicPlayer');
+                if (musicPlayer) {
+                    musicPlayer.classList.remove('playing');
+                    musicPlayer.innerHTML = '🔕';
+                }
+            } else {
+                changeMusicForSection(index);
+            }
+            
+            handleSectionEnter(index);
+        }
+
+        function changeMusicForSection(sectionIndex) {
+            // Get the music track for this section
+            const targetMusicId = musicBySection[sectionIndex] || 'bgMusic1';
+            
+            // Don't change if already playing the right track
+            if (currentMusicTrack === targetMusicId && musicPlaying) return;
+            
+            // Get all audio elements
+            const allAudio = [document.getElementById('bgMusic1'), document.getElementById('bgMusic2'), 
+                             document.getElementById('bgMusic3'), document.getElementById('bgMusic4'),
+                             document.getElementById('birthdayMusic')];
+            
+            // Fade out current music smoothly
+            allAudio.forEach(audio => {
+                if (audio && audio.volume > 0.05) {
+                    gsap.to(audio, { volume: 0, duration: 0.8, onComplete: () => {
+                        audio.pause();
+                        audio.currentTime = 0;
+                    }});
+                }
+            });
+            
+            // Fade in new music with smooth transition
+            const targetAudio = document.getElementById(targetMusicId);
+            if (targetAudio && musicPlaying) {
+                targetAudio.volume = 0;
+                targetAudio.currentTime = 0;
+                targetAudio.play().catch(e => console.log('Autoplay prevented'));
+                gsap.to(targetAudio, { volume: 0.7, duration: 1, ease: 'power1.inOut' });
+                currentMusicTrack = targetMusicId;
+                console.log('🎵 Music smooth transition to: ' + targetMusicId);
+            }
+        }
+
+        function updateProgressBar() {
+            const percent = (currentSection / (totalSections - 1)) * 100;
+            document.getElementById('progressFill').style.width = percent + '%';
+        }
+
+        function scrollToNext() {
+            showSection(Math.min(currentSection + 1, totalSections - 1));
+            createSparkles();
+            // Music transitions handled automatically in showSection()
+        }
+
+        function scrollToTop() {
+            showSection(0);
+        }
+
+        // Event listeners for nav buttons
+        document.getElementById('scrollBtn').addEventListener('click', scrollToNext);
+        document.getElementById('scrollTopBtn').addEventListener('click', scrollToTop);
+
+        /* ================================================
+           NAVIGATION DOTS LOGIC
+           ================================================ */
+        function createNavDots() {
+            const container = document.getElementById('navDots');
+            if (!container) return; // nav dots intentionally removed
+
+            for (let i = 0; i < totalSections; i++) {
+                const dotContainer = document.createElement('div');
+                dotContainer.className = 'dot-container';
+
+                const dot = document.createElement('div');
+                dot.className = 'dot' + (i === 0 ? ' active' : '');
+
+                const label = document.createElement('div');
+                label.className = 'dot-label';
+                label.textContent = sectionLabels[i];
+
+                dotContainer.appendChild(dot);
+                dotContainer.appendChild(label);
+
+                dotContainer.addEventListener('click', () => {
+                    showSection(i);
+                });
+
+                container.appendChild(dotContainer);
+            }
+        }
+
+        function updateNavDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                if (index === currentSection) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        /* ================================================
+           SECTION-SPECIFIC TRIGGERS
+           ================================================ */
+        function handleSectionEnter(sectionIndex) {
+            switch(sectionIndex) {
+                case 6:
+                    // Countdown section
+                    startCountdown();
+                    break;
+                case 7:
+                    // Birthday section - switch to birthday music
+                    switchToBirthdayMusic();
+                    triggerBirthdaySurprise();
+                    break;
+            }
+        }
+
+        /* ================================================
+           MUSIC PLAYER LOGIC WITH MULTIPLE TRACKS
+           ================================================ */
+        function setupMusicPlayer() {
+            const musicPlayer = document.getElementById('musicPlayer');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const volumeControl = document.getElementById('volumeControl');
+            const trackInfo = document.getElementById('trackInfo');
+            
+            // Get all audio elements
+            const bgMusic1 = document.getElementById('bgMusic1');
+            const bgMusic2 = document.getElementById('bgMusic2');
+            const bgMusic3 = document.getElementById('bgMusic3');
+            const bgMusic4 = document.getElementById('bgMusic4');
+            const birthdayMusic = document.getElementById('birthdayMusic');
+            
+            // Use device volume if available
+            let deviceVolume = volumeSlider ? (volumeSlider.value / 100) : 0.7;
+            
+            bgMusic1.volume = deviceVolume;
+            bgMusic2.volume = deviceVolume;
+            bgMusic3.volume = deviceVolume;
+            bgMusic4.volume = deviceVolume;
+            birthdayMusic.volume = deviceVolume;
+            
+            // Music player click - toggle play/pause (PC & Mobile)
+            if (musicPlayer) {
+                musicPlayer.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    console.log('🎵 Music player clicked. Current state:', musicPlaying);
+                    
+                    if (musicPlaying) {
+                        // Pause music
+                        pauseAllMusic();
+                        musicPlayer.classList.remove('playing');
+                        musicPlayer.innerHTML = '🔕';
+                        musicPlaying = false;
+                        console.log('⏸️ Music paused');
+                    } else {
+                        // Start/resume music
+                        startMusicPlayback();
+                        musicPlayer.innerHTML = '🔊';
+                        console.log('▶️ Music started');
+                    }
+                });
+                
+                // Also handle touch for mobile
+                musicPlayer.addEventListener('touchend', (e) => {
+                    e.stopPropagation();
+                    if (musicPlaying) {
+                        pauseAllMusic();
+                        musicPlayer.classList.remove('playing');
+                        musicPlayer.innerHTML = '🔕';
+                        musicPlaying = false;
+                    } else {
+                        startMusicPlayback();
+                        musicPlayer.innerHTML = '🔊';
+                    }
+                });
+            }
+
+            // Double-click to cycle tracks
+            if (musicPlayer) {
+                musicPlayer.addEventListener('dblclick', () => {
+                    cycleMusicTrack();
+                });
+            }
+            
+            // Show volume on hover
+            if (musicPlayer) {
+                musicPlayer.addEventListener('mouseenter', () => {
+                    if (volumeControl) volumeControl.classList.add('show');
+                    if (trackInfo) trackInfo.classList.add('show');
+                });
+                
+                musicPlayer.addEventListener('mouseleave', () => {
+                    setTimeout(() => {
+                        if (volumeControl && !volumeControl.matches(':hover')) {
+                            volumeControl.classList.remove('show');
+                            trackInfo.classList.remove('show');
+                        }
+                    }, 300);
+                });
+            }
+            
+            if (volumeControl) {
+                volumeControl.addEventListener('mouseleave', () => {
+                    volumeControl.classList.remove('show');
+                    if (trackInfo) trackInfo.classList.remove('show');
+                });
+            }
+            
+            // Volume slider - update all tracks smoothly
+            if (volumeSlider) {
+                volumeSlider.addEventListener('input', (e) => {
+                    const volume = e.target.value / 100;
+                    gsap.to([bgMusic1, bgMusic2, bgMusic3, bgMusic4, birthdayMusic], {
+                        volume: volume,
+                        duration: 0.3
+                    });
+                });
+            }
+        }
+
+        function cycleMusicTrack() {
+            // Cycle through the available bgMusic ids in order
+            const trackIds = ['bgMusic1', 'bgMusic2', 'bgMusic3', 'bgMusic4'];
+            const idx = trackIds.indexOf(currentMusicTrack);
+            const nextIdx = (idx === -1 ? 0 : (idx + 1) % trackIds.length);
+            currentMusicTrack = trackIds[nextIdx];
+            const names = {bgMusic1: 'Memories 🎵', bgMusic2: 'Romantic 💕', bgMusic3: 'Happy Rock 🎸', bgMusic4: 'New Beginning ✨'};
+            const trackNameEl = document.getElementById('trackName');
+            if (trackNameEl) trackNameEl.textContent = names[currentMusicTrack] || 'Music';
+            if (musicPlaying) {
+                pauseAllMusic();
+                playCurrentMusic();
+            }
+        }
+
+        function playCurrentMusic() {
+            return new Promise((resolve, reject) => {
+                try {
+                    const musicId = musicBySection[currentSection] || 'bgMusic1';
+                    const bgMusic1 = document.getElementById('bgMusic1');
+                    const bgMusic2 = document.getElementById('bgMusic2');
+                    const bgMusic3 = document.getElementById('bgMusic3');
+                    const bgMusic4 = document.getElementById('bgMusic4');
+                    const birthdayMusic = document.getElementById('birthdayMusic');
+                    
+                    pauseAllMusic();
+                    
+                    const musicMap = {
+                        'bgMusic1': bgMusic1,
+                        'bgMusic2': bgMusic2,
+                        'bgMusic3': bgMusic3,
+                        'bgMusic4': bgMusic4,
+                        'birthdayMusic': birthdayMusic
+                    };
+                    
+                    const targetAudio = musicMap[musicId];
+                    if (targetAudio) {
+                        try {
+                            // Proper audio configuration
+                            targetAudio.currentTime = 0;
+                            targetAudio.volume = 0.7;
+                            targetAudio.muted = false;
+                            targetAudio.preload = 'auto';
+                            
+                            console.log('▶️ Attempting to play: ' + musicId);
+                            
+                            // Try to play
+                            const playPromise = targetAudio.play();
+                            
+                            if (playPromise !== undefined) {
+                                playPromise.then(() => {
+                                    console.log('✅ Music playing successfully: ' + musicId);
+                                    resolve();
+                                }).catch(error => {
+                                    console.warn('⚠️ Music blocked: ' + error.message);
+                                    reject(error);
+                                });
+                            } else {
+                                // Old browsers without promise support
+                                console.log('ℹ️ Old browser - no play promise');
+                                resolve();
+                            }
+                        } catch (e) {
+                            console.error('❌ Error playing music:', e);
+                            reject(e);
+                        }
+                    } else {
+                        console.error('❌ Audio element not found: ' + musicId);
+                        reject(new Error('Audio element not found'));
+                    }
+                } catch (error) {
+                    console.error('Music playback error:', error);
+                    reject(error);
+                }
+            });
+        }
+
+        function pauseAllMusic() {
+            document.getElementById('bgMusic1').pause();
+            document.getElementById('bgMusic2').pause();
+            document.getElementById('bgMusic3').pause();
+            document.getElementById('bgMusic4').pause();
+            document.getElementById('birthdayMusic').pause();
+        }
+
+        function switchToBirthdayMusic() {
+            if (!musicPlaying) return;
+            
+            pauseAllMusic();
+            
+            const birthdayMusic = document.getElementById('birthdayMusic');
+            birthdayMusic.currentTime = 0;
+            birthdayMusic.volume = 0.7;
+            birthdayMusic.play().catch(e => console.log('Autoplay prevented'));
+            
+            const trackNameEl = document.getElementById('trackName');
+            if (trackNameEl) trackNameEl.textContent = 'Birthday Song! 🎉';
+        }
+
+        /* ================================================
+           PARTICLE SYSTEM
+           ================================================ */
+        function createParticles() {
+            const colors = ['#f093fb', '#f5576c', '#FFD700', '#667eea', '#764ba2', '#a8edea'];
+            
+            for (let i = 1; i <= 9; i++) {
+                const container = document.getElementById(`particles${i}`);
+                if (!container) continue;
+                
+                // Create particles per section (fewer on small screens)
+                const particleCount = window.innerWidth < 700 ? 8 : 25;
+                for (let j = 0; j < particleCount; j++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.width = (Math.random() * 6 + 3) + 'px';
+                    particle.style.height = particle.style.width;
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.animationDelay = Math.random() * 10 + 's';
+                    particle.style.animationDuration = (Math.random() * 5 + 10) + 's';
+                    container.appendChild(particle);
+                }
+            }
+        }
+
+        /* ================================================
+           EMOJI RAIN EFFECT
+           ================================================ */
+        function createEmojiRain() {
+            const container = document.getElementById('emojiRain');
+            if (!container) return;
+            
+            const emojis = ['💕', '💖', '💗', '💓', '💝', '❤️', '✨', '🌟', '⭐', '💫'];
+            
+            function addEmoji() {
+                const emoji = document.createElement('div');
+                emoji.className = 'falling-emoji';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = Math.random() * 100 + '%';
+                emoji.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                emoji.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(emoji);
+                
+                // Remove after animation
+                setTimeout(() => emoji.remove(), 10000);
+            }
+            
+            // Add emoji regularly, but reduce frequency on small screens
+            const emojiInterval = window.innerWidth < 500 ? 1200 : 600;
+            const emojiTimer = setInterval(addEmoji, emojiInterval);
+
+            // stop emoji generation when user is on other sections (save CPU)
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) clearInterval(emojiTimer);
+            });
+        }
+
+        /* ================================================
+           SECTION 2: PASSWORD CHALLENGE LOGIC
+           Validates user input against the configured password
+           ================================================ */
+        function checkPassword() {
+            const input = document.getElementById('passwordInput');
+            const value = input.value.toLowerCase().trim();
+            
+            // Get password from config (easy to customize)
+            const correctPassword = TEXT_CONFIG.passwordAnswer;
+            
+            if (value === correctPassword) {
+                // Correct password - celebrate!
+                createSparkles();
+                input.style.borderColor = '#4CAF50';
+                
+                setTimeout(() => {
+                    alert('🎉 Correct! You unlocked my heart! 💖');
+                    scrollToNext();
+                }, 500);
+            } else {
+                // Wrong password - shake animation
+                input.style.animation = 'shake 0.5s';
+                input.style.borderColor = '#f44336';
+                
+                setTimeout(() => {
+                    input.style.animation = '';
+                    input.style.borderColor = 'rgba(255,255,255,0.5)';
+                    input.value = '';
+                }, 500);
+                
+                alert('❌ Not quite! Try again! 💕');
+            }
+        }
+
+        // Allow Enter key to submit password
+        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        /* ================================================
+           SECTION 3: MEMORY GAME LOGIC
+           ================================================ */
+        function initMemoryGame() {
+            // CUSTOMIZE: Change emojis here if you want different symbols
+            const emojis = ['💕', '🌟', '🎉', '🌙', '☀️', '🎈', '💖', '✨'];
+            
+            // Create pairs and shuffle
+            const cards = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
+            const grid = document.getElementById('cardGrid');
+            
+            cards.forEach((emoji, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.emoji = emoji;
+                card.dataset.index = index;
+                
+                const emojiSpan = document.createElement('span');
+                emojiSpan.className = 'card-emoji';
+                emojiSpan.textContent = emoji;
+                
+                card.appendChild(emojiSpan);
+                card.addEventListener('click', flipCard);
+                grid.appendChild(card);
+            });
+        }
+
+        function flipCard() {
+            // Prevent flipping during lock, same card, or already matched
+            if (lockBoard) return;
+            if (this === firstCard) return;
+            if (this.classList.contains('matched')) return;
+            
+            // Start timer on very first card flip
+            if (gameTimer === 0 && moveCount === 0 && !gameInterval) {
+                gameInterval = setInterval(() => {
+                    gameTimer++;
+                    document.getElementById('gameTimer').textContent = gameTimer;
+                }, 1000);
+            }
+            
+            // Flip the card
+            this.classList.add('flipped');
+            
+            if (!firstCard) {
+                // First card clicked
+                firstCard = this;
+                return;
+            }
+            
+            // Second card clicked
+            secondCard = this;
+            lockBoard = true;
+            moveCount++;
+            document.getElementById('moveCount').textContent = moveCount;
+            
+            checkMatch();
+        }
+
+        function checkMatch() {
+            const isMatch = firstCard.dataset.emoji === secondCard.dataset.emoji;
+            
+            if (isMatch) {
+                // Cards match!
+                disableCards();
+                matchedPairs++;
+                document.getElementById('matchCount').textContent = matchedPairs;
+                createSparkles();
+                
+                // Check if all pairs matched
+                if (matchedPairs === 8) {
+                    clearInterval(gameInterval);
+                    setTimeout(() => {
+                        alert(`🎉 Amazing! You matched all cards in ${gameTimer} seconds with ${moveCount} moves! 💖`);
+                    }, 500);
+                }
+            } else {
+                // Cards don't match
+                unflipCards();
+            }
+        }
+
+        function disableCards() {
+            firstCard.classList.add('matched');
+            secondCard.classList.add('matched');
+            resetBoard();
+        }
+
+        function unflipCards() {
+            setTimeout(() => {
+                firstCard.classList.remove('flipped');
+                secondCard.classList.remove('flipped');
+                resetBoard();
+            }, 1000);
+        }
+
+        function resetBoard() {
+            [firstCard, secondCard, lockBoard] = [null, null, false];
+        }
+
+        /* ================================================
+           SECTION 5: GIF GALLERY INTERACTION
+           ================================================ */
+        function gifClick(element) {
+            // Animate GIF on click
+            gsap.to(element, {
+                rotation: 360,
+                scale: 1.15,
+                duration: 0.6,
+                ease: 'back.out(2)',
+                yoyo: true,
+                repeat: 1
+            });
+            
+            createSparkles();
+        }
+
+        /* ================================================
+           SECTION 6: QUIZ GAME LOGIC
+           ================================================ */
+        function initQuiz() {
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (quizQuestion >= quizData.length) return;
+            
+            const data = quizData[quizQuestion];
+            document.getElementById('quizQuestion').textContent = data.question;
+            document.getElementById('currentQ').textContent = quizQuestion + 1;
+            
+            const optionsContainer = document.getElementById('quizOptions');
+            optionsContainer.innerHTML = '';
+            
+            data.options.forEach((option, index) => {
+                const div = document.createElement('div');
+                div.className = 'quiz-option';
+                div.textContent = option;
+                div.addEventListener('click', () => checkAnswer(div, index === data.correct));
+                optionsContainer.appendChild(div);
+            });
+        }
+
+        function checkAnswer(element, isCorrect) {
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+            
+            if (isCorrect) {
+                element.classList.add('correct');
+                quizScore++;
+                document.getElementById('quizScore').textContent = quizScore;
+                createSparkles();
+            } else {
+                element.classList.add('wrong');
+            }
+            
+            setTimeout(() => {
+                quizQuestion++;
+                if (quizQuestion < quizData.length) {
+                    setTimeout(() => {
+                        loadQuizQuestion();
+                    }, 400);
+                } else {
+                    setTimeout(() => {
+                        if (quizScore === 3) {
+                            alert('🎉 Perfect score! You know my heart perfectly! 💖');
+                        } else if (quizScore === 2) {
+                            alert('💕 Great job! You know me well! 😊');
+                        }
+                    }, 500);
+                }
+            }, 1800);
+        }
+
+        /* ================================================
+           SECTION 7: COUNTDOWN ANIMATION WITH VOICE
+           ================================================ */
+        function startCountdown() {
+            const numberElem = document.getElementById('countdownNumber');
+            const countdownAudios = [
+                document.getElementById('countdownAudio3'),  // 3
+                document.getElementById('countdownAudio2'),  // 2
+                document.getElementById('countdownAudio1')   // 1
+            ];
+            
+            let count = 3;
+            numberElem.textContent = '3';
+            
+            // Pause background music during countdown for better experience
+            pauseAllMusic();
+            
+            // Play first countdown sound
+            if (countdownAudios[0]) {
+                countdownAudios[0].currentTime = 0;
+                countdownAudios[0].volume = 0.8;
+                countdownAudios[0].play().catch(() => {});
+            }
+            
+            // Animate first number
+            gsap.fromTo(numberElem,
+                { scale: 0.3, opacity: 0, rotation: -180 },
+                { scale: 1, opacity: 1, rotation: 0, duration: 0.8, ease: 'elastic.out(1, 0.5)' }
+            );
+            
+            const countdown = () => {
+                count--;
+                if (count > 0) {
+                    // Play countdown sound for current number
+                    const audioIndex = 3 - count; // 0 for 2, 1 for 1
+                    if (countdownAudios[audioIndex]) {
+                        countdownAudios[audioIndex].currentTime = 0;
+                        countdownAudios[audioIndex].volume = 0.8;
+                        countdownAudios[audioIndex].play().catch(() => {});
+                    }
+                    
+                    // Update number and animate
+                    numberElem.textContent = count;
+                    gsap.fromTo(numberElem,
+                        { scale: 0.3, opacity: 0, rotation: -180 },
+                        { scale: 1, opacity: 1, rotation: 0, duration: 0.8, ease: 'elastic.out(1, 0.5)' }
+                    );
+                    
+                    setTimeout(countdown, 1500);
+                } else {
+                    // Countdown complete - move to birthday section
+                    setTimeout(() => {
+                        // Birthday section will auto-start birthday music
+                        scrollToNext();
+                    }, 800);
+                }
+            };
+            
+            setTimeout(countdown, 1500);
+        }
+
+        /* ================================================
+           SECTION 8: BIRTHDAY SURPRISE EFFECTS
+           ================================================ */
+        function triggerBirthdaySurprise() {
+            createCanvasFireworks();
+            createMassiveConfetti();
+            
+            // Auto-play birthday music
+            if (!musicPlaying) {
+                playCurrentMusic();
+                document.getElementById('musicPlayer').classList.add('playing');
+                musicPlaying = true;
+            }
+        }
+
+        function createCanvasFireworks() {
+            const canvas = document.getElementById('fireworksCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const fireworks = [];
+            const particles = [];
+            
+            class Firework {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = canvas.height;
+                    this.targetY = Math.random() * canvas.height / 2;
+                    this.speed = 5;
+                    this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                }
+                
+                update() {
+                    this.y -= this.speed;
+                    if (this.y <= this.targetY) {
+                        this.explode();
+                        return false;
+                    }
+                    return true;
+                }
+                
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+                
+                explode() {
+                    for (let i = 0; i < 50; i++) {
+                        particles.push(new Particle(this.x, this.y, this.color));
+                    }
+                }
+            }
+            
+            class Particle {
+                constructor(x, y, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.vx = (Math.random() - 0.5) * 8;
+                    this.vy = (Math.random() - 0.5) * 8;
+                    this.color = color;
+                    this.life = 100;
+                }
+                
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.vy += 0.1;
+                    this.life -= 2;
+                    return this.life > 0;
+                }
+                
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.globalAlpha = this.life / 100;
+                    ctx.fill();
+                    ctx.globalAlpha = 1;
+                }
+            }
+            
+            function animate() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                if (Math.random() < 0.1) {
+                    fireworks.push(new Firework());
+                }
+                
+                for (let i = fireworks.length - 1; i >= 0; i--) {
+                    if (!fireworks[i].update()) {
+                        fireworks.splice(i, 1);
+                    } else {
+                        fireworks[i].draw();
+                    }
+                }
+                
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    if (!particles[i].update()) {
+                        particles.splice(i, 1);
+                    } else {
+                        particles[i].draw();
+                    }
+                }
+                
+                // Keep animating while on birthday section
+                if (currentSection === 7) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            
+            animate();
+        }
+
+        function createMassiveConfetti() {
+            const colors = ['#f093fb', '#f5576c', '#FFD700', '#4facfe', '#00f2fe', '#a8edea', '#ff6b9d', '#c44569'];
+            const count = window.innerWidth < 500 ? 120 : (window.innerWidth < 1024 ? 150 : 200);
+            const delayPerItem = window.innerWidth < 500 ? 15 : 25;
+            
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-20px';
+                    confetti.style.width = (Math.random() * 12 + 6) + 'px';
+                    confetti.style.height = (Math.random() * 12 + 6) + 'px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.zIndex = '9999';
+                    confetti.style.pointerEvents = 'none';
+                    document.body.appendChild(confetti);
+                    
+                    gsap.to(confetti, {
+                        y: window.innerHeight + 100,
+                        x: (Math.random() - 0.5) * 500,
+                        rotation: Math.random() * 720,
+                        duration: Math.random() * 3.5 + 2.5,
+                        ease: 'power1.in',
+                        onComplete: () => confetti.remove()
+                    });
+                }, i * delayPerItem);
+            }
+        }
+
+        /* ================================================
+           SECTION 9: SPECIAL EFFECTS
+           ================================================ */
+        function heartExplosion() {
+            const hearts = ['💕', '💖', '💗', '💓', '💝', '❤️', '🧡', '💛', '💚', '💙', '💜', '🤍', '🎀', '💐', '🌹'];
+            const count = window.innerWidth < 500 ? 80 : (window.innerWidth < 1024 ? 120 : 150);
+            
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.position = 'fixed';
+                heart.style.left = '50%';
+                heart.style.top = '50%';
+                heart.style.fontSize = (Math.random() * 40 + 24) + 'px';
+                heart.style.zIndex = '10000';
+                heart.style.pointerEvents = 'none';
+                document.body.appendChild(heart);
+                
+                const angle = (Math.PI * 2 * i) / count;
+                const distance = 180 + Math.random() * 450;
+                
+                gsap.to(heart, {
+                    x: Math.cos(angle) * distance,
+                    y: Math.sin(angle) * distance,
+                    rotation: Math.random() * 720,
+                    scale: 0,
+                    opacity: 0,
+                    duration: 2.5,
+                    ease: 'power2.out',
+                    onComplete: () => heart.remove()
+                });
+            }
+            
+            createSparkles();
+        }
+
+        function createSparkles() {
+            for (let i = 0; i < 25; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.textContent = '✨';
+                sparkle.className = 'sparkle';
+                sparkle.style.left = (Math.random() * window.innerWidth) + 'px';
+                sparkle.style.top = (Math.random() * window.innerHeight) + 'px';
+                sparkle.style.fontSize = (Math.random() * 35 + 18) + 'px';
+                document.body.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.remove(), 1000);
+            }
+        }
+
+        function downloadMessage() {
+            alert('💖 This precious memory is saved in your heart forever! To download, you can take a screenshot or save the page. 💕');
+        }
+
+        function redirectToSurprise() {
+            // Show the inline surprise modal (was a separate surprise.html file)
+            showSurpriseModal();
+        }
+
+        /* ================================================
+           REPLAY EXPERIENCE
+           ================================================ */
+        function replayExperience() {
+            // Reset all game states
+            quizScore = 0;
+            quizQuestion = 0;
+            matchedPairs = 0;
+            gameTimer = 0;
+            moveCount = 0;
+            
+            document.getElementById('quizScore').textContent = '0';
+            document.getElementById('matchCount').textContent = '0';
+            document.getElementById('gameTimer').textContent = '0';
+            document.getElementById('moveCount').textContent = '0';
+            document.getElementById('passwordInput').value = '';
+            
+            if (gameInterval) clearInterval(gameInterval);
+            
+            // Reset memory cards
+            document.querySelectorAll('.memory-card').forEach(card => {
+                card.classList.remove('flipped', 'matched');
+            });
+            
+            // Reset quiz
+            loadQuizQuestion();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ================================================
+           START AGAIN - RETURN TO HOMEPAGE
+           Auto-resets all game states and redirects
+           ================================================ */
+        function startAgain() {
+            // Pause all music immediately
+            pauseAllMusic();
+            musicPlaying = false;
+            
+            // Smooth fade out before redirect
+            const sections = document.querySelectorAll('.section');
+            gsap.to(sections, {
+                opacity: 0,
+                duration: 0.8,
+                onComplete: () => {
+                    // Reset all game variables to initial state
+                    currentSection = 0;
+                    quizScore = 0;
+                    quizQuestion = 0;
+                    matchedPairs = 0;
+                    gameTimer = 0;
+                    moveCount = 0;
+                    
+                    // Smart redirect logic
+                    const path = window.location.pathname;
+                    if (path.includes('javascript') || path.includes('html-revision')) {
+                        // Inside html-revision folder, go up one level
+                        window.location.href = '../index.html';
+                    } else {
+                        // Try direct index
+                        window.location.href = 'index.html';
+                    }
+                }
+            });
+        }
+
+        /* ================================================
+           VIDEO SURPRISE FUNCTIONS - Multi-Video Support
+           ENHANCED: Working video URLs & better error handling
+           ================================================ */
+        
+        // Video URLs - Use working test videos OR replace with your own
+        const videoUrls = [
+            'https://commondatastorage.googleapis.com/gtv-videos-library/sample/BigBuckBunny.mp4',  // Video 1 - Works!
+            'https://commondatastorage.googleapis.com/gtv-videos-library/sample/ElephantsDream.mp4', // Video 2 - Works!
+            'https://commondatastorage.googleapis.com/gtv-videos-library/sample/ForBiggerBlazes.mp4'  // Video 3 - Works!
+        ];
+        
+        let currentVideoSlot = 0;
+        let videoLoadInProgress = false;
+        
+        function showVideoSurprise() {
+            console.log('🎬 Opening video surprise modal...');
+            const videoModal = document.getElementById('videoModal');
+            const videoInfo = document.getElementById('videoInfo');
+            
+            if (!videoModal) {
+                console.error('❌ CRITICAL: Video modal element not found!');
+                alert('❌ Error: Video modal not initialized. Please refresh the page.');
+                return;
+            }
+            
+            if (!document.getElementById('surpriseVideo')) {
+                console.error('❌ CRITICAL: Video element not found!');
+                alert('❌ Error: Video player not initialized. Please refresh the page.');
+                return;
+            }
+            
+            videoModal.style.display = 'flex';
+            console.log('✅ Modal displayed');
+            
+            pauseAllMusic();
+            console.log('🔇 Music paused');
+            
+            currentVideoSlot = 0;
+            createMassiveConfetti();
+            console.log('🎉 Confetti created');
+            
+            // Show loading message
+            videoInfo.textContent = '⏳ Loading Video 1... Please wait';
+            
+            // Use setTimeout to ensure DOM is fully rendered before loading video
+            setTimeout(() => {
+                console.log('📺 Starting video loading sequence...');
+                playVideoSlot(0);
+            }, 300);
+        }
+        
+        function playVideoSlot(slotIndex) {
+            console.log('🎬 Playing video slot:', slotIndex);
+            
+            if (videoLoadInProgress) {
+                console.warn('⏳ Video load already in progress, skipping...');
+                return;
+            }
+            
+            const surpriseVideo = document.getElementById('surpriseVideo');
+            const videoInfo = document.getElementById('videoInfo');
+            
+            if (!surpriseVideo) {
+                console.error('❌ Video element not found!');
+                return;
+            }
+            
+            if (slotIndex >= 0 && slotIndex < videoUrls.length && videoUrls[slotIndex]) {
+                videoLoadInProgress = true;
+                currentVideoSlot = slotIndex;
+                const videoUrl = videoUrls[slotIndex];
+                
+                console.log('🔄 Loading video from:', videoUrl);
+                
+                // Stop current video first
+                surpriseVideo.pause();
+                surpriseVideo.currentTime = 0;
+                
+                // Animate container for flip effect
+                const videoContainer = surpriseVideo.parentElement;
+                if (videoContainer) {
+                    gsap.to(videoContainer, {
+                        rotationY: 90,
+                        duration: 0.3,
+                        onComplete: () => {
+                            // Update video source during the flip
+                            surpriseVideo.src = videoUrl;
+                            
+                            // Wait for video to be loadable, then load it
+                            surpriseVideo.oncanplay = () => {
+                                console.log('✅ Video ready to play');
+                                videoLoadInProgress = false;
+                                
+                                // Flip back to view
+                                gsap.to(videoContainer, {
+                                    rotationY: 0,
+                                    duration: 0.3
+                                });
+                                
+                                // Start playing
+                                surpriseVideo.play().catch(err => {
+                                    console.warn('⚠️ Autoplay prevented:', err.message);
+                                    videoInfo.textContent = '🎥 Click play button to start video';
+                                });
+                            };
+                            
+                            surpriseVideo.onerror = (e) => {
+                                console.error('❌ Video load error:', e);
+                                videoLoadInProgress = false;
+                                videoInfo.textContent = '❌ Video failed to load. Check URL or try another video.';
+                                gsap.to(videoContainer, {
+                                    rotationY: 0,
+                                    duration: 0.3
+                                });
+                            };
+                            
+                            surpriseVideo.load();
+                        }
+                    });
+                }
+                
+                // Update active button styling
+                document.querySelectorAll('.video-btn-switch').forEach((btn, idx) => {
+                    if (idx === slotIndex) {
+                        btn.style.background = 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)';
+                        btn.style.boxShadow = '0 5px 20px rgba(240, 147, 251, 0.6)';
+                        gsap.to(btn, { scale: 1.1, duration: 0.3 });
+                    } else {
+                        btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                        btn.style.boxShadow = '0 5px 15px rgba(102,126,234,0.4)';
+                        gsap.to(btn, { scale: 1, duration: 0.3 });
+                    }
+                });
+                
+                // Update info
+                const videoNames = ['💫 Big Buck Bunny', '💕 Elephants Dream', '🌟 For Bigger Blazes'];
+                const videoDescription = ['Adventure in the forest', 'Surreal animation journey', 'Inspiring short film'];
+                videoInfo.textContent = `Loading: ${videoNames[slotIndex]} - ${videoDescription[slotIndex]}`;
+                
+                // Resume music when video ends
+                surpriseVideo.onended = () => {
+                    console.log('✅ Video ended');
+                    if (musicPlaying) {
+                        console.log('🎵 Resuming background music');
+                        playCurrentMusic();
+                    }
+                };
+            } else {
+                videoLoadInProgress = false;
+                const msg = '😕 Video ' + (slotIndex + 1) + ' not available. Click another video to try.';
+                videoInfo.textContent = msg;
+                console.warn(msg);
+            }
+        }
+
+        function closeVideoModal() {
+            console.log('❌ Closing video modal');
+            const videoModal = document.getElementById('videoModal');
+            const surpriseVideo = document.getElementById('surpriseVideo');
+            
+            if (videoModal && surpriseVideo) {
+                videoModal.style.display = 'none';
+                surpriseVideo.pause();
+                surpriseVideo.currentTime = 0;
+                surpriseVideo.src = '';
+                videoLoadInProgress = false;
+                
+                // Resume music
+                if (musicPlaying) {
+                    console.log('🎵 Resuming music after video');
+                    playCurrentMusic();
+                }
+            }
+        }
+
+        /* ================================================
+           RESPONSIVE CANVAS RESIZE
+           ================================================ */
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('fireworksCanvas');
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        });
+
+        /* ================================================
+           KEYBOARD SHORTCUTS & EASTER EGGS - ULTRA OPTIMIZED FIX
+           FIXED: Major performance improvement for 'love' typing hang
+           ================================================ */
+        let lastKeyTime = 0;
+        const keyDebounceDelay = 100; // Increased debounce for better performance
+        let lastHeartExplosionTime = 0;
+        const heartExplosionCooldown = 2500; // 2.5 second cooldown between explosions
+        let heartExplosionActive = false;
+        
+        document.addEventListener('keydown', (e) => {
+            // Debounce keydown events to prevent lag
+            const now = Date.now();
+            if (now - lastKeyTime < keyDebounceDelay) return;
+            lastKeyTime = now;
+            
+            // Handle navigation keys first (these are always active)
+            if (e.key === 'ArrowDown' || e.key === ' ') {
+                e.preventDefault();
+                scrollToNext();
+                return; // Exit early
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (currentSection > 0) {
+                    const sections = document.querySelectorAll('.section');
+                    sections[currentSection - 1].scrollIntoView({ behavior: 'smooth' });
+                }
+                return; // Exit early
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                scrollToTop();
+                return; // Exit early
+            }
+            
+            // PERFORMANCE FIX: Easter egg typing "love" with optimized cooldown
+            const key = e.key.toLowerCase();
+            if (key === 'l' || key === 'o' || key === 'v' || key === 'e') {
+                const loveSequence = ['l', 'o', 'v', 'e'];
+                if (key === loveSequence[iLoveYouCount]) {
+                    iLoveYouCount++;
+                    if (iLoveYouCount === 4) {
+                        // CRITICAL FIX: Check cooldown and skip if too busy
+                        const timeSinceLastHeart = now - lastHeartExplosionTime;
+                        if (timeSinceLastHeart < heartExplosionCooldown) {
+                            // Still in cooldown - skip to prevent hang
+                            iLoveYouCount = 0;
+                            return;
+                        }
+                        
+                        // Only trigger if not already active
+                        if (!heartExplosionActive) {
+                            heartExplosionActive = true;
+                            lastHeartExplosionTime = now;
+                            
+                            // Use requestIdleCallback for non-blocking animation
+                            if (window.requestIdleCallback) {
+                                requestIdleCallback(() => {
+                                    heartExplosion();
+                                    heartExplosionActive = false;
+                                }, { timeout: 500 });
+                            } else {
+                                // Fallback for browsers without requestIdleCallback
+                                setTimeout(() => {
+                                    heartExplosion();
+                                    heartExplosionActive = false;
+                                }, 50);
+                            }
+                        }
+                        iLoveYouCount = 0;
+                    }
+                } else {
+                    iLoveYouCount = 0;
+                }
+            }
+        }, { passive: false });
+
+        /* ================================================
+           PREVENT CONTEXT MENU (Optional - for cleaner UX)
+           ================================================ */
+        // Uncomment if you want to disable right-click
+        // document.addEventListener('contextmenu', e => e.preventDefault());
+    </script>
+    <!-- Surprise modal (embedded from surprise.html) -->
+    <style>
+        #surpOverlay{position:fixed;inset:0;background:linear-gradient(135deg,#f093fb 0%,#f5576c 50%,#FFD700 100%);display:none;align-items:center;justify-content:center;z-index:20000}
+        #surpWrap{width:100%;max-width:920px;margin:clamp(18px,4vw,40px);padding:clamp(18px,3vw,34px);background:transparent;border-radius:18px;text-align:center;color:#fff}
+        #surpWrap h2{font-family:Pacifico, cursive;font-size:clamp(2rem,6vw,4rem);margin:12px}
+        #surpWrap p{max-width:900px;margin:6px auto;font-size:clamp(0.95rem,2.2vw,1.1rem)}
+        #surpGif{width:100%;max-width:560px;border-radius:18px;margin:18px auto;display:block;box-shadow:0 30px 80px rgba(0,0,0,0.35)}
+        .surpControls{display:flex;gap:12px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+        .surpBtn{background:#fff;color:#f5576c;padding:12px 28px;border-radius:999px;border:none;cursor:pointer;font-weight:700}
+        .surpBtnGhost{background:transparent;border:2px solid rgba(255,255,255,0.6);color:#fff}
+        #surpConfetti{position:fixed;inset:0;pointer-events:none;z-index:19999}
+        .surpHeart{position:absolute;font-size:clamp(1.2rem,4vw,2.4rem);opacity:0.3;pointer-events:none}
+        @media(max-width:480px){#surpWrap{padding:14px}#surpGif{max-width:100%}}
+    </style>
+
+    <div id="surpOverlay" aria-hidden="true">
+        <div id="surpConfetti"></div>
+        <div id="surpWrap" role="dialog" aria-modal="true">
+            <h2>🎉 Surprise! 💕✨</h2>
+            <p>You made it! This little moment is filled with all the love, excitement, and joy. Tap "Play Surprise" to hear a happy tune and let the magic flow through! 💖</p>
+            <img id="surpGif" src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="Surprise GIF">
+            <div class="surpControls">
+                <button id="surpPlayBtn" class="surpBtn">🎶 Play Surprise 🎶</button>
+                <button id="surpBackBtn" class="surpBtn surpBtnGhost">💌 Back</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="surpAudio" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-happiness.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Surprise modal logic (embedded)
+        const surpOverlay = document.getElementById('surpOverlay');
+        const surpPlayBtn = document.getElementById('surpPlayBtn');
+        const surpBackBtn = document.getElementById('surpBackBtn');
+        const surpAudio = document.getElementById('surpAudio');
+        const surpConfetti = document.getElementById('surpConfetti');
+
+        function showSurpriseModal(){
+            surpOverlay.style.display = 'flex';
+            surpOverlay.setAttribute('aria-hidden','false');
+            // gentle entrance animation if GSAP available
+            if(window.gsap) gsap.fromTo('#surpWrap',{y:40,opacity:0},{y:0,opacity:1,duration:0.7,ease:'power2.out'});
+            createSurpHearts();
+            // try to play immediately (may be blocked by browser)
+            surpAudio.volume = 0.7;
+            surpAudio.play().catch(()=>{});
+        }
+
+        function closeSurpriseModal(){
+            surpAudio.pause();
+            surpOverlay.style.display = 'none';
+            surpOverlay.setAttribute('aria-hidden','true');
+            // remove floating hearts
+            document.querySelectorAll('.surpHeart').forEach(h=>h.remove());
+            // clear confetti children
+            while(surpConfetti.firstChild) surpConfetti.removeChild(surpConfetti.firstChild);
+        }
+
+        function createSurpHearts(){
+            const hearts = ['💕','💖','💗','💓','💝','❤️','🧡','💛','💚','💙','💜','🤍','🎀','💐','🌹'];
+            for(let i=0;i<12;i++){
+                const el = document.createElement('div');
+                el.className='surpHeart';
+                el.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+                el.style.left = (Math.random()*90)+'%';
+                el.style.bottom = (-20 - Math.random()*80)+'px';
+                el.style.opacity = 0.25 + Math.random()*0.7;
+                el.style.fontSize = (12 + Math.random()*30) + 'px';
+                document.body.appendChild(el);
+                const dur = 6 + Math.random()*9;
+                if(window.gsap){
+                    gsap.to(el,{y: - (window.innerHeight + 200), x: (Math.random()-0.5)*400, rotation: Math.random()*360, duration: dur, ease:'power1.out', onComplete: ()=>el.remove()});
+                } else {
+                    // fallback simple CSS animation
+                    el.style.transition = `transform ${dur}s linear, opacity ${dur}s linear`;
+                    requestAnimationFrame(()=> el.style.transform = `translateY(-${window.innerHeight + 200}px) translateX(${(Math.random()-0.5)*400}px)`);
+                    setTimeout(()=>el.remove(), dur*1000+400);
+                }
+            }
+            // lightweight confetti burst
+            const colors = ['#f093fb','#f5576c','#FFD700','#667eea','#764ba2','#a8edea','#ff6b9d','#c44569'];
+            for(let i=0;i<80;i++){
+                const c = document.createElement('div');
+                c.style.position='absolute';
+                c.style.left = (Math.random()*100)+'%';
+                c.style.top = '-5%';
+                c.style.width = (4+Math.random()*12)+'px';
+                c.style.height = c.style.width;
+                c.style.background = colors[Math.floor(Math.random()*colors.length)];
+                c.style.borderRadius = Math.random()>0.6? '50%':'3px';
+                c.style.opacity = 0.95;
+                c.style.boxShadow = '0 0 8px currentColor';
+                surpConfetti.appendChild(c);
+                if(window.gsap){
+                    gsap.to(c,{y:window.innerHeight+200,x:(Math.random()-0.5)*600,rotation:Math.random()*720,duration:Math.random()*3+1.6,ease:'power2.out',onComplete:()=>c.remove()});
+                } else {
+                    setTimeout(()=>c.remove(), 3500 + Math.random()*1200);
+                }
+            }
+        }
+
+        surpPlayBtn.addEventListener('click', ()=>{
+            surpAudio.volume = 0.7;
+            surpAudio.play().then(()=>{
+                surpPlayBtn.textContent = '🎶 Playing... 🎶';
+                surpPlayBtn.disabled = true;
+            }).catch(()=>{
+                // ignore autoplay block, but update UI
+                surpPlayBtn.textContent = '🎶 Tap to Play 🎶';
+            });
+            // animate additional confetti
+            // small burst
+        });
+
+        surpBackBtn.addEventListener('click', ()=>{
+            closeSurpriseModal();
+        });
+
+        // allow closing with Escape
+        document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && surpOverlay.style.display==='flex') closeSurpriseModal(); });
+    </script>
+</body>
+</html>
